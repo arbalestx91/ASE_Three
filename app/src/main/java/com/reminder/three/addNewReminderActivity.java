@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import com.google.android.gms.location.LocationServices;
+
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class addNewReminderActivity extends AppCompatActivity {
@@ -74,7 +76,9 @@ public class addNewReminderActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             //Do something with the date chosen by the user
             TextView dateView = (TextView) getActivity().findViewById(R.id.dateView);
-            dateView.setText(String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+            DecimalFormat formatter = new DecimalFormat("00");
+
+            dateView.setText(formatter.format(day) + "/" + formatter.format(month + 1) + "/" + String.valueOf(year));
         }
     }
 
@@ -96,8 +100,9 @@ public class addNewReminderActivity extends AppCompatActivity {
             //Do something with the user chosen time
             //Get reference of host activity (XML Layout File) TextView widget
             TextView timeView = (TextView) getActivity().findViewById(R.id.timeView);
+            DecimalFormat formatter = new DecimalFormat("00");
             //Display the user changed time on TextView
-            timeView.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            timeView.setText(formatter.format(hourOfDay) + ":" + formatter.format(minute));
         }
     }
 }
