@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import com.google.android.gms.location.LocationServices;
 import java.util.Calendar;
 
 public class addNewReminderActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class addNewReminderActivity extends AppCompatActivity {
 
         Button btnDate = (Button) findViewById(R.id.btnDate);
         Button btnTime = (Button) findViewById(R.id.btnTime);
+        Button BtnLocation = (Button) findViewById(R.id.BtnLocation);
 
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,16 @@ public class addNewReminderActivity extends AppCompatActivity {
                 newFragment.show(getFragmentManager(),"Time Picker");
             }
         });
+
+
+        BtnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
