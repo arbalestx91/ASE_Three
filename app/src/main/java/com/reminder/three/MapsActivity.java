@@ -1,18 +1,26 @@
 package com.reminder.three;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker marker;
+    private Marker newMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +46,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            // Show rationale and request permission.
+        }
+
+        if (mMap != null) {
+            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+
+                @Override
+                public void onMyLocationChange(Location arg0) {
+                    // TODO Auto-generated method stub
+                    marker = mMap.addMarker(new MarkerOptions().position(new LatLng(arg0.getLatitude(), arg0.getLongitude())).title("It's Me!"));
+                    marker.setDraggable(true);
+                }
+            });
+
+        }
+
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker arg0) {
+                // TODO Auto-generated method stub
+                Log.d("System out", "onMarkerDragStart..." + arg0.getPosition().latitude + "..." + arg0.getPosition().longitude);
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onMarkerDragEnd(Marker arg0) {
+                // TODO Auto-generated method stub
+                Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+                if(marker != null)
+                    marker.remove();
+                mMap.addMarker(new MarkerOptions().position(new LatLng(arg0.getPosition().latitude, arg0.getPosition().longitude)).title("It's Me!")).setDraggable(true);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+            }
+
+            @Override
+            public void onMarkerDrag(Marker arg0) {
+                // TODO Auto-generated method stub
+                Log.i("System out", "onMarkerDrag...");
+            }
+        });
+
     }
+
+        // Add a marker in Sydney and move the camera
+//        mMap.addMarker(new MarkerOptions().position(myLocation).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+//    }
 }
