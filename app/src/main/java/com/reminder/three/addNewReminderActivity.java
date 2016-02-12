@@ -78,7 +78,7 @@ public class addNewReminderActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
-            return true;
+            Toast.makeText(getApplicationContext(), "Pressed on Save", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
