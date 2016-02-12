@@ -7,6 +7,7 @@ import android.util.Log;
 
 /**
  * Created by arbalestx on 13/2/16.
+ * Hello Change
  */
 public class SqliteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
