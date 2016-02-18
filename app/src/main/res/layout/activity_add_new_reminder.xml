@@ -23,7 +23,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/edittextTask"
         android:layout_below="@+id/task"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="Select Date"
         android:id="@+id/btnDate"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/edittextTask"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -62,7 +62,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Date"
+        android:text="Select Time"
         android:id="@+id/btnTime"
         android:layout_below="@+id/dateView"
         android:layout_alignLeft="@+id/btnDate"

@@ -5,59 +5,65 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import com.google.android.gms.location.LocationServices;
 
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-public class addNewReminderActivity extends AppCompatActivity {
+public class addNewReminderActivity extends AppCompatActivity{
+
+//    private static final String TIME_PATTERN = "HH:mm";
+    private TasksDataSource taskDS;
+    private Calendar c = null;
+    private String strTask;
+    private Button btnDate;
+    private Button btnTime;
+    private Button btnLocation;
+    private EditText edittextTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_reminder);
 
-        Button btnDate = (Button) findViewById(R.id.btnDate);
-        Button btnTime = (Button) findViewById(R.id.btnTime);
-        Button BtnLocation = (Button) findViewById(R.id.BtnLocation);
+        btnDate = (Button) findViewById(R.id.btnDate);
+        btnTime = (Button) findViewById(R.id.btnTime);
+        btnLocation = (Button) findViewById(R.id.BtnLocation);
+        edittextTask = (EditText) findViewById(R.id.edittextTask);
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getFragmentManager(),"Date Picker");
+                newFragment.show(getFragmentManager(), "Pick a Date");
             }
         });
 
         btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new TimePickerFragment();
-                newFragment.show(getFragmentManager(),"Time Picker");
-            }
-        });
-
-
-        BtnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                DialogFragment newFragment = new TimePickerFragment();
+                newFragment.show(getFragmentManager(),"Pick a Time");
             }
         });
     }
@@ -78,17 +84,26 @@ public class addNewReminderActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
-            Toast.makeText(getApplicationContext(), "Pressed on Save", Toast.LENGTH_LONG).show();
-        }
+            taskDS = new TasksDataSource(this);
+            try {
+                taskDS.open();
+                strTask = edittextTask.getText().toString();
+                Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
+                taskDS.createTask(strTask, c, 0, 0);
+                finish();
+            } catch (SQLException e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){
             //Use the current time as the default values for the time picker
-            final Calendar c = Calendar.getInstance();
+            c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
@@ -106,11 +121,11 @@ public class addNewReminderActivity extends AppCompatActivity {
         }
     }
 
-    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+    public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){
             //Use the current time as the default values for the time picker
-            final Calendar c = Calendar.getInstance();
+            c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
@@ -129,10 +144,10 @@ public class addNewReminderActivity extends AppCompatActivity {
             timeView.setText(formatter.format(hourOfDay) + formatter.format(minute) + "HR");
 
             if(hourOfDay <= 12) {
-                timeView.setText(timeView.getText() + " / " + formatter.format(hourOfDay) + formatter.format(minute) + "AM");
+                timeView.setText(timeView.getText() + " | " + formatter.format(hourOfDay) + ":" + formatter.format(minute) + "AM");
             }
             else {
-                timeView.setText(timeView.getText() + " / " + formatter.format(hourOfDay - 12) +  ":" + formatter.format(minute) + "PM");
+                timeView.setText(timeView.getText() + " | " + formatter.format(hourOfDay - 12) +  ":" + formatter.format(minute) + "PM");
             }
         }
     }
