@@ -189,10 +189,4 @@ public class addNewReminderActivity extends AppCompatActivity{
             }
         }
     }
-
-    public Calendar DateToCalendar(Date date){
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        return cal;
-    }
 }
