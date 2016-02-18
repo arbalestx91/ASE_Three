@@ -25,7 +25,7 @@ import java.util.Calendar;
 public class addNewReminderActivity extends AppCompatActivity{
 
 //    private static final String TIME_PATTERN = "HH:mm";
-    private TasksDataSource taskDS;
+    private TasksDataSource datasource;
     private Calendar c = null;
     private String strTask;
     private Button btnDate;
@@ -84,12 +84,12 @@ public class addNewReminderActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
-            taskDS = new TasksDataSource(this);
+            datasource = new TasksDataSource(this);
             try {
-                taskDS.open();
+                datasource.open();
                 strTask = edittextTask.getText().toString();
-                Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
-                taskDS.createTask(strTask, c, 0, 0);
+                //Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
+                datasource.createTask(strTask, c, 0, 0);
                 finish();
             } catch (SQLException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();

@@ -105,4 +105,11 @@ public class TasksDataSource {
         cursor.close();
         return tasks;
     }
+
+    public Tasks retrieveTask(long id) {
+        Cursor c = database.query(SqliteHelper.TABLE_TASKS,
+                allColumns, "_id=" + id, null, null, null, null);
+        c.moveToFirst();
+        return cursorToTask(c);
+    }
 }

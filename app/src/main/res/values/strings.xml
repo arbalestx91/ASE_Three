@@ -9,4 +9,5 @@
     <string name="title_activity_add_new">addNew</string>
 
     <string name="ctxmenu_delete">Delete</string>
+    <string name="title_activity_view_reminder">ViewReminder</string>
 </resources>

@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Tasks tasks = (Tasks) listView.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), ViewReminder.class);
+                intent.putExtra("taskID", tasks.getId());
+                startActivity(intent);
+            }
+        });
     }
 
     public boolean onContextItemSelected(MenuItem item) {

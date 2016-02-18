@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Date"
-        android:id="@+id/textViewDate"
+        android:id="@+id/txtViewDate"
         android:layout_alignBottom="@+id/btnDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -53,7 +53,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:ems="10"
         android:id="@+id/dateView"
-        android:layout_below="@+id/textViewDate"
+        android:layout_below="@+id/txtViewDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:editable="false"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Time"
-        android:id="@+id/textViewTime"
+        android:id="@+id/txtViewTime"
         android:layout_alignBottom="@+id/btnTime"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -86,7 +86,7 @@
         android:id="@+id/timeView"
         android:editable="false"
         android:textColor="#7f7f7f"
-        android:layout_below="@+id/textViewTime"
+        android:layout_below="@+id/txtViewTime"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
