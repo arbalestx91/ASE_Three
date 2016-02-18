@@ -9,11 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d87adba-44b4-4e11-b86d-c3035d6f8bdf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/TasksDataSource.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/TasksDataSource.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/ViewReminder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/ViewReminder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_new_reminder.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_add_new_reminder.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/addNewReminderActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/reminder/three/addNewReminderActivity.java" />
+    <list default="true" id="5d87adba-44b4-4e11-b86d-c3035d6f8bdf" name="Default" comment="Allow edits&#10;&#10;only thing is with the calendar updating..">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ASE_Three.iws" />
@@ -68,8 +64,8 @@
       <file leaf-file-name="ViewReminder.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/reminder/three/ViewReminder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36562073">
-              <caret line="63" column="15" selection-start-line="63" selection-start-column="15" selection-end-line="63" selection-end-column="15" />
+            <state vertical-scroll-proportion="0.15552524">
+              <caret line="68" column="62" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
               <folding>
                 <element signature="e#1370#1674#0" expanded="true" />
                 <element signature="e#1673#1674#0" expanded="true" />
@@ -2280,7 +2276,13 @@
       <option name="project" value="LOCAL" />
       <updated>1455780676641</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Allow edits&#10;&#10;only thing is with the calendar updating..">
+      <created>1455783910709</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1455783910709</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2357,7 +2359,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added formatting for Date &amp; Time to show as 2 decimal places" />
     <MESSAGE value="Allow viewing of reminder. left edit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Allow viewing of reminder. left edit" />
+    <MESSAGE value="Allow edits&#10;&#10;only thing is with the calendar updating.." />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow edits&#10;&#10;only thing is with the calendar updating.." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2548,8 +2551,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/reminder/three/ViewReminder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36562073">
-          <caret line="63" column="15" selection-start-line="63" selection-start-column="15" selection-end-line="63" selection-end-column="15" />
+        <state vertical-scroll-proportion="0.15552524">
+          <caret line="68" column="62" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
           <folding>
             <element signature="e#1370#1674#0" expanded="true" />
             <element signature="e#1673#1674#0" expanded="true" />
