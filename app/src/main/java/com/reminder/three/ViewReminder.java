@@ -13,11 +13,12 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 public class ViewReminder extends AppCompatActivity {
 
     private long id;
-    private Tasks tasks;
+    private Tasks task;
     private TasksDataSource datasource;
     private TextView txtTask;
     private TextView txtDate;
@@ -37,14 +38,49 @@ public class ViewReminder extends AppCompatActivity {
         Intent getIntent = getIntent();
         id = getIntent.getLongExtra("taskID", -1);
 
+        updateView();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), addNewReminderActivity.class);
+                intent.putExtra("taskID", id);
+                startActivity(intent);
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateView();
+    }
+
+    @Override
+    protected void onPause() {
+        datasource.close();
+        super.onPause();
+    }
+
+    public void updateView() {
         if(id != -1) {
+            DecimalFormat formatter = new DecimalFormat("00");
             datasource = new TasksDataSource(this);
             try {
                 datasource.open();
-                tasks = datasource.retrieveTask(id);
-                txtTask.setText(tasks.getTask());
-                txtDate.setText(tasks.getDateTime().getDate() + "/" + tasks.getDateTime().getMonth() + "/" + tasks.getDateTime().getYear());
-                txtTime.setText(tasks.getDateTime().getHours() + ":" + tasks.getDateTime().getMinutes());
+                task = datasource.retrieveTask(id);
+                txtTask.setText(task.getTask());
+                txtDate.setText(formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getMonth()) + "/" + formatter.format(task.getDateTime().getYear()));
+                txtTime.setText(formatter.format(task.getDateTime().getHours()) + formatter.format(task.getDateTime().getMinutes()) + "HR");
+
+                if(task.getDateTime().getHours() <= 12) {
+                    txtTime.setText(txtTime.getText() + " | " + formatter.format(task.getDateTime().getHours()) + ":" + formatter.format(task.getDateTime().getMinutes()) + "AM");
+                }
+                else {
+                    txtTime.setText(txtTime.getText() + " | " + formatter.format(task.getDateTime().getHours() - 12) + ":" + formatter.format(task.getDateTime().getMinutes()) + "PM");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -52,15 +88,5 @@ public class ViewReminder extends AppCompatActivity {
         else {
             Toast.makeText(this, "No reminder found", Toast.LENGTH_LONG).show();
         }
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

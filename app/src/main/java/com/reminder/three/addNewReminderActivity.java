@@ -20,18 +20,26 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class addNewReminderActivity extends AppCompatActivity{
 
 //    private static final String TIME_PATTERN = "HH:mm";
     private TasksDataSource datasource;
+    private Tasks task;
+    private long taskID;
     private Calendar c = null;
     private String strTask;
     private Button btnDate;
     private Button btnTime;
     private Button btnLocation;
     private EditText edittextTask;
+    private TextView dateView;
+    private TextView timeView;
+    private boolean updateTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,33 @@ public class addNewReminderActivity extends AppCompatActivity{
         btnTime = (Button) findViewById(R.id.btnTime);
         btnLocation = (Button) findViewById(R.id.BtnLocation);
         edittextTask = (EditText) findViewById(R.id.edittextTask);
+        dateView = (TextView) findViewById(R.id.dateView);
+        timeView = (TextView) findViewById(R.id.timeView);
+
+        if(getIntent().getExtras() != null) {
+            taskID = getIntent().getLongExtra("taskID", -1);
+            updateTask = true;
+            if(taskID != -1) {
+                DecimalFormat formatter = new DecimalFormat("00");
+                datasource = new TasksDataSource(this);
+                try {
+                    datasource.open();
+                    task = datasource.retrieveTask(taskID);
+                    edittextTask.setText(task.getTask());
+
+                    dateView.setText(formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getYear()));
+                    timeView.setText(formatter.format(task.getDateTime().getHours()) + formatter.format(task.getDateTime().getMinutes()) + "HR");
+
+                    if (task.getDateTime().getHours() <= 12) {
+                        timeView.setText(timeView.getText() + " | " + formatter.format(task.getDateTime().getHours()) + ":" + formatter.format(task.getDateTime().getMinutes()) + "AM");
+                    } else {
+                        timeView.setText(timeView.getText() + " | " + formatter.format(task.getDateTime().getHours() - 12) + ":" + formatter.format(task.getDateTime().getMinutes()) + "PM");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,13 +123,16 @@ public class addNewReminderActivity extends AppCompatActivity{
             try {
                 datasource.open();
                 strTask = edittextTask.getText().toString();
-                //Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
-                datasource.createTask(strTask, c, 0, 0);
+                if (updateTask) {
+                    datasource.updateTasks(taskID, strTask, c, 0, 0);
+                } else {
+                    //Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
+                    datasource.createTask(strTask, c, 0, 0);
+                }
                 finish();
             } catch (SQLException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -150,5 +188,11 @@ public class addNewReminderActivity extends AppCompatActivity{
                 timeView.setText(timeView.getText() + " | " + formatter.format(hourOfDay - 12) +  ":" + formatter.format(minute) + "PM");
             }
         }
+    }
+
+    public Calendar DateToCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
     }
 }

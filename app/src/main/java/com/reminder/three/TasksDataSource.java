@@ -112,4 +112,14 @@ public class TasksDataSource {
         c.moveToFirst();
         return cursorToTask(c);
     }
+
+    public void updateTasks(long id, String task, Calendar dateTime, double lat, double lng) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String strDateTime = dateFormat.format(dateTime.getTime());
+        values.put(SqliteHelper.COLUMN_TASK, task);
+        values.put(SqliteHelper.COLUMN_DATE, strDateTime);
+
+        db.update(SqliteHelper.TABLE_TASKS, values, "_id=?", new String[] {String.valueOf(id)});
+    }
 }
