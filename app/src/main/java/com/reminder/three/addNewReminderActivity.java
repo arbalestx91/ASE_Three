@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class addNewReminderActivity extends AppCompatActivity{
 
@@ -31,7 +32,7 @@ public class addNewReminderActivity extends AppCompatActivity{
     private TasksDataSource datasource;
     private Tasks task;
     private long taskID;
-    private Calendar c = null;
+    private Calendar c = null, cset = null;
     private String strTask;
     private Button btnDate;
     private Button btnTime;
@@ -53,6 +54,8 @@ public class addNewReminderActivity extends AppCompatActivity{
         dateView = (TextView) findViewById(R.id.dateView);
         timeView = (TextView) findViewById(R.id.timeView);
 
+        cset = new GregorianCalendar();
+
         if(getIntent().getExtras() != null) {
             taskID = getIntent().getLongExtra("taskID", -1);
             updateTask = true;
@@ -64,13 +67,14 @@ public class addNewReminderActivity extends AppCompatActivity{
                     task = datasource.retrieveTask(taskID);
                     edittextTask.setText(task.getTask());
 
-                    dateView.setText(formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getYear()));
-                    timeView.setText(formatter.format(task.getDateTime().getHours()) + formatter.format(task.getDateTime().getMinutes()) + "HR");
+                    cset.setTime(task.getDateTime());
+                    dateView.setText(formatter.format(cset.get(Calendar.DAY_OF_MONTH)) + "/" + formatter.format(cset.get(Calendar.MONTH)+1) + "/" + formatter.format(cset.get(Calendar.YEAR)));
+                    timeView.setText(formatter.format(cset.get(Calendar.HOUR_OF_DAY)) + formatter.format(cset.get(Calendar.MINUTE)) + "HR");
 
                     if (task.getDateTime().getHours() <= 12) {
-                        timeView.setText(timeView.getText() + " | " + formatter.format(task.getDateTime().getHours()) + ":" + formatter.format(task.getDateTime().getMinutes()) + "AM");
+                        timeView.setText(timeView.getText() + " | " + formatter.format(cset.get(Calendar.HOUR_OF_DAY)) + ":" + formatter.format(cset.get(Calendar.MINUTE)) + "AM");
                     } else {
-                        timeView.setText(timeView.getText() + " | " + formatter.format(task.getDateTime().getHours() - 12) + ":" + formatter.format(task.getDateTime().getMinutes()) + "PM");
+                        timeView.setText(timeView.getText() + " | " + formatter.format(cset.get(Calendar.HOUR_OF_DAY) - 12) + ":" + formatter.format(cset.get(Calendar.MINUTE)) + "PM");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -124,10 +128,10 @@ public class addNewReminderActivity extends AppCompatActivity{
                 datasource.open();
                 strTask = edittextTask.getText().toString();
                 if (updateTask) {
-                    datasource.updateTasks(taskID, strTask, c, 0, 0);
+                    datasource.updateTasks(taskID, strTask, cset, 0, 0);
                 } else {
                     //Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
-                    datasource.createTask(strTask, c, 0, 0);
+                    datasource.createTask(strTask, cset, 0, 0);
                 }
                 finish();
             } catch (SQLException e) {
@@ -155,6 +159,8 @@ public class addNewReminderActivity extends AppCompatActivity{
             TextView dateView = (TextView) getActivity().findViewById(R.id.dateView);
             DecimalFormat formatter = new DecimalFormat("00");
 
+            cset.set(year, month, day);
+
             dateView.setText(formatter.format(day) + "/" + formatter.format(month + 1) + "/" + String.valueOf(year));
         }
     }
@@ -180,6 +186,9 @@ public class addNewReminderActivity extends AppCompatActivity{
             DecimalFormat formatter = new DecimalFormat("00");
             //Display the user changed time on TextView
             timeView.setText(formatter.format(hourOfDay) + formatter.format(minute) + "HR");
+
+            cset.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            cset.set(Calendar.MINUTE, minute);
 
             if(hourOfDay <= 12) {
                 timeView.setText(timeView.getText() + " | " + formatter.format(hourOfDay) + ":" + formatter.format(minute) + "AM");

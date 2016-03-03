@@ -14,6 +14,8 @@ import org.w3c.dom.Text;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ViewReminder extends AppCompatActivity {
 
@@ -23,6 +25,7 @@ public class ViewReminder extends AppCompatActivity {
     private TextView txtTask;
     private TextView txtDate;
     private TextView txtTime;
+    private Calendar c = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class ViewReminder extends AppCompatActivity {
         txtTask = (TextView) findViewById(R.id.txtViewTask);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
+
+        c = new GregorianCalendar();
 
         Intent getIntent = getIntent();
         id = getIntent.getLongExtra("taskID", -1);
@@ -72,14 +77,16 @@ public class ViewReminder extends AppCompatActivity {
                 datasource.open();
                 task = datasource.retrieveTask(id);
                 txtTask.setText(task.getTask());
-                txtDate.setText(formatter.format(task.getDateTime().getDay()) + "/" + formatter.format(task.getDateTime().getMonth()) + "/" + formatter.format(task.getDateTime().getYear()));
-                txtTime.setText(formatter.format(task.getDateTime().getHours()) + formatter.format(task.getDateTime().getMinutes()) + "HR");
+
+                c.setTime(task.getDateTime());
+                txtDate.setText(formatter.format(c.get(Calendar.DAY_OF_MONTH)) + "/" + formatter.format(c.get(Calendar.MONTH)+1) + "/" + formatter.format(c.get(Calendar.YEAR)));
+                txtTime.setText(formatter.format(c.get(Calendar.HOUR_OF_DAY)) + formatter.format(c.get(Calendar.MINUTE)) + "HR");
 
                 if(task.getDateTime().getHours() <= 12) {
-                    txtTime.setText(txtTime.getText() + " | " + formatter.format(task.getDateTime().getHours()) + ":" + formatter.format(task.getDateTime().getMinutes()) + "AM");
+                    txtTime.setText(txtTime.getText() + " | " + formatter.format(c.get(Calendar.HOUR_OF_DAY)) + ":" + formatter.format(c.get(Calendar.MINUTE)) + "AM");
                 }
                 else {
-                    txtTime.setText(txtTime.getText() + " | " + formatter.format(task.getDateTime().getHours() - 12) + ":" + formatter.format(task.getDateTime().getMinutes()) + "PM");
+                    txtTime.setText(txtTime.getText() + " | " + formatter.format(c.get(Calendar.HOUR_OF_DAY) - 12) + ":" + formatter.format(c.get(Calendar.MINUTE)) + "PM");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

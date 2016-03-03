@@ -35,7 +35,7 @@
         android:layout_below="@+id/task"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:lines="15" />
+        android:lines="5" />
 
     <Button
         android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Date"
         android:id="@+id/txtViewDate"
-        android:layout_alignBottom="@+id/btnDate"
+        android:layout_alignTop="@+id/btnDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -83,7 +83,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Time"
         android:id="@+id/txtViewTime"
-        android:layout_alignBottom="@+id/btnTime"
+        android:layout_alignTop="@+id/btnTime"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
