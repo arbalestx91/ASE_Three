@@ -3,14 +3,11 @@ package com.reminder.three;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -82,7 +79,7 @@ public class ViewReminder extends AppCompatActivity {
                 txtDate.setText(formatter.format(c.get(Calendar.DAY_OF_MONTH)) + "/" + formatter.format(c.get(Calendar.MONTH)+1) + "/" + formatter.format(c.get(Calendar.YEAR)));
                 txtTime.setText(formatter.format(c.get(Calendar.HOUR_OF_DAY)) + formatter.format(c.get(Calendar.MINUTE)) + "HR");
 
-                if(task.getDateTime().getHours() <= 12) {
+                if(c.get(Calendar.HOUR_OF_DAY) <= 12) {
                     txtTime.setText(txtTime.getText() + " | " + formatter.format(c.get(Calendar.HOUR_OF_DAY)) + ":" + formatter.format(c.get(Calendar.MINUTE)) + "AM");
                 }
                 else {

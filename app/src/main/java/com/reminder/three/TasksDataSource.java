@@ -5,12 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.google.android.gms.gcm.Task;
-
-import org.w3c.dom.Comment;
-
 import java.sql.SQLException;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

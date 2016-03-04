@@ -1,8 +1,10 @@
 package com.reminder.three;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +22,7 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class addNewReminderActivity extends AppCompatActivity{
@@ -71,7 +70,7 @@ public class addNewReminderActivity extends AppCompatActivity{
                     dateView.setText(formatter.format(cset.get(Calendar.DAY_OF_MONTH)) + "/" + formatter.format(cset.get(Calendar.MONTH)+1) + "/" + formatter.format(cset.get(Calendar.YEAR)));
                     timeView.setText(formatter.format(cset.get(Calendar.HOUR_OF_DAY)) + formatter.format(cset.get(Calendar.MINUTE)) + "HR");
 
-                    if (task.getDateTime().getHours() <= 12) {
+                    if (cset.get(Calendar.HOUR_OF_DAY) <= 12) {
                         timeView.setText(timeView.getText() + " | " + formatter.format(cset.get(Calendar.HOUR_OF_DAY)) + ":" + formatter.format(cset.get(Calendar.MINUTE)) + "AM");
                     } else {
                         timeView.setText(timeView.getText() + " | " + formatter.format(cset.get(Calendar.HOUR_OF_DAY) - 12) + ":" + formatter.format(cset.get(Calendar.MINUTE)) + "PM");
@@ -133,6 +132,16 @@ public class addNewReminderActivity extends AppCompatActivity{
                     //Toast.makeText(this, strTask, Toast.LENGTH_LONG).show();
                     datasource.createTask(strTask, cset, 0, 0);
                 }
+                //Set Alarm
+                Intent intent = new Intent(this, Alarm.class);
+                intent.putExtra("Task", strTask);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, cset.getTimeInMillis(), pendingIntent);
+                Toast.makeText(this, "Alarm Set.", Toast.LENGTH_LONG).show();
+
                 finish();
             } catch (SQLException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
